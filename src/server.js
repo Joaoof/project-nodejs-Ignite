@@ -27,11 +27,11 @@ const server = http.createServer((req, res) => {
       email: "Jonh@example.com"
     })
 
-    return res.end("Criação de usuários")
+    return res.writeHead(201).end() // writeHead --> vai informar o status code
   }
 
 
-  return res.end("Hello, World!")
+  return res.writeHead(404).end()
 })
 
 // localhost:3333
