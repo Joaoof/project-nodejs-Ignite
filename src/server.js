@@ -9,9 +9,21 @@ import http from 'node:http' // Exportar a const http
 
 const users = [] // Array vazio
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async(req, res) => {
 
   const { method, url } = req
+
+  const buffers = []
+
+  for await (const chunk of req) {
+    buffers.push(chunk)
+  }
+
+  try {
+    req.body = JSON.parse(Buffer.concat(buffers).toString())
+  } catch {
+    req.body = null
+  }
 
   if(method == 'GET' && url == '/users') {
     return res
@@ -20,11 +32,12 @@ const server = http.createServer((req, res) => {
   }
 
   if(method == 'POST' && url == '/users') {
+    const { name, email} = req.body
 
     users.push({ // criação de um novo usuário pra dentro do array
       id: 1,
-      name: "Jonh of God",
-      email: "Jonh@example.com"
+      name,
+      email,
     })
 
     return res.writeHead(201).end() // writeHead --> vai informar o status code
