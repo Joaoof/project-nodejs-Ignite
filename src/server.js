@@ -1,4 +1,5 @@
 import http from 'node:http' // Exportar a const http
+import { Database } from './middlewares/database.js'
 import { json } from './middlewares/json.js'
 
 // Criar um usuário (nome, email, senha)
@@ -8,7 +9,7 @@ import { json } from './middlewares/json.js'
 // Como que o nosso front-end vai saber que o back devolveu uma respota em formtado de JSON?
 // => Cabeçalhos (Requisição/resposta) => Metadados
 
-const users = [] // Array vazio
+const database = new Database()
 
 const server = http.createServer(async(req, res) => {
 
@@ -17,18 +18,22 @@ const server = http.createServer(async(req, res) => {
   await json(req, res)
 
   if(method == 'GET' && url == '/users') {
-    return res
-    .end(JSON.stringify(users))
+
+    const users = database.select('users')
+
+    return res.end(JSON.stringify(users))
   }
 
   if(method == 'POST' && url == '/users') {
     const { name, email} = req.body
 
-    users.push({ // criação de um novo usuário pra dentro do array
+    const user = { // criação de um novo usuário pra dentro do array
       id: 1,
       name,
       email,
-    })
+    }
+
+    database.insert('users', user)
 
     return res.writeHead(201).end() // writeHead --> vai informar o status code
   }
