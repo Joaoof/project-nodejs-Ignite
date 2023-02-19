@@ -1,4 +1,5 @@
 import http from 'node:http' // Exportar a const http
+import { randomUUID } from 'node:crypto'
 import { Database } from './middlewares/database.js'
 import { json } from './middlewares/json.js'
 
@@ -28,7 +29,7 @@ const server = http.createServer(async(req, res) => {
     const { name, email} = req.body
 
     const user = { // criação de um novo usuário pra dentro do array
-      id: 1,
+      id: randomUUID(),
       name,
       email,
     }
