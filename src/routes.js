@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto'
+import path from 'node:path'
 import { Database } from "./middlewares/database.js"
 
 
@@ -32,6 +33,13 @@ export const routes = [
       database.insert('users', user)
   
       return res.writeHead(201).end() 
+    }
+  },
+  {
+    method: 'DELETE',
+    path: '/users/ID',  // caminho
+    handler: (req, res) => {
+
     }
   }
 ]
