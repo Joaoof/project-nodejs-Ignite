@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import path from 'node:path'
+// import path from 'node:path'
 import { buildRoutePath } from '../utils/build-route-path.js'
 import { Database } from "./middlewares/database.js"
 
@@ -40,7 +40,7 @@ export const routes = [
     method: 'DELETE',
     path: buildRoutePath('/users/:id'),  // caminho
     handler: (req, res) => {
-
+      return res.end()
     }
   }
 ]
